@@ -1,0 +1,16 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.root-wrapper {
+  padding: 1em;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
