@@ -10,12 +10,16 @@ class App extends React.Component {
     this.handleBreakIncrement = this.handleBreakIncrement.bind(this);
     this.handleSessionDecrement = this.handleSessionDecrement.bind(this);
     this.handleSessionIncrement = this.handleSessionIncrement.bind(this);
+    this.handleStartStop = this.handleStartStop.bind(this);
+    this.countDownSession = this.countDownSession.bind(this);
   }
 
   handleReset(event) {
     this.setState({
       breakLength: 5,
       sessionLength: 25,
+      sessionTimeLeft: 0,
+      sessionRunning: false,
     });
   }
 
@@ -51,16 +55,44 @@ class App extends React.Component {
     }
   }
 
+  handleStartStop(event) {
+    if (!this.state.sessionRunning) {
+      this.setState({
+        sessionTimeLeft: this.state.sessionLength * 60,
+        sessionCountDown: setInterval(this.countDownSession, 1000),
+        sessionRunning: true,
+      });
+    } else {
+      clearInterval(this.state.sessionCountDown);
+      this.setState({
+        sessionTimeLeft: 0,
+        sessionRunning: false,
+      });
+    }
+  }
+
+  countDownSession() {
+    if (this.state.sessionTimeLeft > 0) {
+      this.setState({
+        sessionTimeLeft: this.state.sessionTimeLeft - 1,
+      });
+    }
+  }
+
   render() {
     return (
       <div className="subroot-wrapper">
         <div id="timer-label">Session</div>
-        <div id="time-left">mm:ss</div>
+        <div id="time-left">{this.state.sessiontimeLeft}s</div>
         <div id="break-label">Break Length</div>
         <div id="break-length">{this.state.breakLength}</div>
         <div id="session-label">Session Length</div>
         <div id="session-length">{this.state.sessionLength}</div>
-        <button id="start_stop" className="start-stop-btn">
+        <button
+          id="start_stop"
+          className="start-stop-btn"
+          onclick={this.handleStartStop}
+        >
           Start/Stop
         </button>
         <button id="reset" className="reset-btn" onClick={this.handleReset}>
