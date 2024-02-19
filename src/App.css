@@ -1,27 +1,6 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: "MuseoModerno", cursive;
-}
-
-.root-wrapper {
-  display: flex;
-  align-items: center;
-  padding: 1em;
-  height: 100vh;
-}
-
 .subroot-wrapper {
   margin: 0 auto;
-  box-shadow: 0px 0px 15px 0 grey;
-  border: 0;
-  border-radius: 10px;
-  background-color: #eeeeee;
+  border: 1px solid red;
   padding: 1em;
   width: 20rem;
   color: #000000;
@@ -29,7 +8,6 @@ body {
 }
 
 .clock-title {
-  font-style: italic;
   font-weight: bold;
   font-size: 2rem;
   text-align: center;
@@ -71,4 +49,9 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+}
+
+#time-left {
+  font-weight: 700;
+  font-size: 4rem;
 }

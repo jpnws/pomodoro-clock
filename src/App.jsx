@@ -1,4 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+
+import beep from "./assets/beep.mp3";
 
 import "./App.css";
 
@@ -16,13 +18,10 @@ const initState = {
 
 function App() {
   const [info, setInfo] = useState(initState);
-  const sessionInterval = useRef(null);
-  const breakInterval = useRef(null);
+  const audioRef = useRef(null);
 
   const handleReset = () => {
     document.getElementById("beep").load();
-    clearInterval(sessionInterval.current);
-    clearInterval(breakInterval.current);
     setInfo(initState);
   };
 
@@ -60,66 +59,70 @@ function App() {
 
   const handleStartStop = () => {
     if (info.sessionInit) {
-      setInfo((currentInfo) => {
-        return {
-          ...currentInfo,
-          sessionTimeLeft: currentInfo.sessionLength * 60,
-          sessionInit: false,
-          sessionRunning: true,
-          timerLabel: "Session",
-        };
-      });
-      sessionInterval.current = setInterval(() => countDownSession(), 1000);
-    } else if (!info.sessionRunning) {
-      setInfo({ ...info, sessionRunning: true });
-      sessionInterval.current = setInterval(() => countDownSession(), 1000);
-    } else {
-      clearInterval(sessionInterval.current);
-      setInfo({ ...info, sessionRunning: false });
-    }
-  };
-
-  const countDownSession = () => {
-    setInfo((currentInfo) => {
-      if (currentInfo.sessionTimeLeft > 0) {
-        return {
-          ...currentInfo,
-          sessionTimeLeft: currentInfo.sessionTimeLeft - 1,
-        };
-      } else if (currentInfo.sessionTimeLeft === 0) {
-        document.getElementById("beep").play();
-        clearInterval(sessionInterval.current);
-        breakInterval.current = setInterval(() => countDownBreak(), 1000);
-        return {
-          sessionRunning: false,
-          sessionInit: true,
-          breakTimeLeft: currentInfo.breakLength * 60,
-          breakInit: false,
-          breakRunning: true,
-          timerLabel: "Break",
-        };
-      }
-    });
-  };
-
-  const countDownBreak = () => {
-    if (info.breakTimeLeft > 0) {
-      setInfo({ ...info, breakTimeLeft: info.breakTimeLeft - 1 });
-    } else if (info.breakTimeLeft === 0) {
-      document.getElementById("beep").play();
-      clearInterval(breakInterval.current);
       setInfo({
         ...info,
-        breakRunning: false,
-        breakInit: true,
         sessionTimeLeft: info.sessionLength * 60,
         sessionInit: false,
         sessionRunning: true,
         timerLabel: "Session",
       });
-      sessionInterval.current = setInterval(() => countDownSession(), 1000);
+    } else if (!info.sessionRunning) {
+      setInfo({ ...info, sessionRunning: true });
+    } else {
+      setInfo({ ...info, sessionRunning: false });
     }
   };
+
+  useEffect(() => {
+    if (info.sessionRunning && !info.breakRunning) {
+      const interval = setInterval(() => {
+        setInfo((prevInfo) => {
+          if (prevInfo.sessionTimeLeft > 0) {
+            return {
+              ...prevInfo,
+              sessionTimeLeft: prevInfo.sessionTimeLeft - 1,
+            };
+          } else {
+            audioRef.current.play();
+            return {
+              ...prevInfo,
+              sessionRunning: false,
+              sessionInit: true,
+              breakTimeLeft: prevInfo.breakLength * 60,
+              breakInit: false,
+              breakRunning: true,
+              timerLabel: "Break",
+            };
+          }
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [info.sessionRunning, info.breakRunning]);
+
+  useEffect(() => {
+    if (info.breakRunning) {
+      const interval = setInterval(() => {
+        setInfo((prevInfo) => {
+          if (prevInfo.breakTimeLeft > 0) {
+            return { ...prevInfo, breakTimeLeft: prevInfo.breakTimeLeft - 1 };
+          } else {
+            audioRef.current.play();
+            return {
+              ...prevInfo,
+              breakRunning: false,
+              breakInit: true,
+              sessionTimeLeft: prevInfo.sessionLength * 60,
+              sessionInit: false,
+              sessionRunning: true,
+              timerLabel: "Session",
+            };
+          }
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [info.breakRunning]);
 
   const pad = (n, width, z) => {
     z = z || "0";
@@ -146,7 +149,7 @@ function App() {
       <div className="length-box">
         <div className="session-length-box">
           <div id="session-label">Session Length</div>
-          <div id="session-length">{info.sessionLength}</div>
+          <div id="session-length">{info.sessionLength} minutes</div>
           <button
             id="session-increment"
             className="session-increment-btn"
@@ -164,7 +167,7 @@ function App() {
         </div>
         <div className="break-length-box">
           <div id="break-label">Break Length</div>
-          <div id="break-length">{info.breakLength}</div>
+          <div id="break-length">{info.breakLength} minutes</div>
           <button
             id="break-increment"
             className="break-increment-btn"
@@ -200,7 +203,8 @@ function App() {
       <audio
         className="beep-audio"
         id="beep"
-        src="beep.mp3"
+        src={beep}
+        ref={audioRef}
       ></audio>
     </div>
   );
