@@ -1,16 +1,15 @@
-.breakLengthBox {
-  text-align: center;
+.sessionLengthBox {
 }
 
-.breakLabel {
+.sessionLabel {
   font-weight: bold;
 }
 
-.breakLength {
+.sessionLength {
 }
 
-.breakIncrementButton {
+.sessionIncrementButton {
 }
 
-.breakDecrementButton {
+.sessionDecrementButton {
 }
