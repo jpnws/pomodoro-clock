@@ -28,7 +28,7 @@ function App() {
   const audioRef = useRef(null);
 
   const handleReset = () => {
-    document.getElementById("beep").load();
+    audioRef.current.play();
     setInfo(initState);
   };
 
@@ -148,37 +148,39 @@ function App() {
 
   return (
     <div className={styles.subrootWrapper}>
-      <div className={styles.clockTitle}>Pomodoro Clock</div>
-      <TimerBox
-        timerLabel={info.timerLabel}
-        minutes={minutes}
-        seconds={seconds}
-      />
-      <div className={styles.lengthBox}>
-        <SessionLengthBox
-          sessionLength={info.sessionLength}
-          handleSessionIncrement={handleSessionIncrement}
-          handleSessionDecrement={handleSessionDecrement}
+      <header className={styles.clockTitle}>Pomodoro Clock</header>
+      <main>
+        <TimerBox
+          timerLabel={info.timerLabel}
+          minutes={minutes}
+          seconds={seconds}
         />
-        <BreakLengthBox
-          breakLength={info.breakLength}
-          handleBreakIncrement={handleBreakIncrement}
-          handleBreakDecrement={handleBreakDecrement}
-        />
-      </div>
-      <div className={styles.controlBox}>
-        <StartButton
-          sessionRunning={info.sessionRunning}
-          breakRunning={info.breakRunning}
-          handleStartStop={handleStartStop}
-        />
-        <StopButton
-          sessionRunning={info.sessionRunning}
-          breakRunning={info.breakRunning}
-          handleStartStop={handleStartStop}
-        />
-        <ResetButton handleReset={handleReset}>Reset</ResetButton>
-      </div>
+        <div className={styles.lengthBox}>
+          <SessionLengthBox
+            sessionLength={info.sessionLength}
+            handleSessionIncrement={handleSessionIncrement}
+            handleSessionDecrement={handleSessionDecrement}
+          />
+          <BreakLengthBox
+            breakLength={info.breakLength}
+            handleBreakIncrement={handleBreakIncrement}
+            handleBreakDecrement={handleBreakDecrement}
+          />
+        </div>
+        <div className={styles.controlBox}>
+          <StartButton
+            sessionRunning={info.sessionRunning}
+            breakRunning={info.breakRunning}
+            handleStartStop={handleStartStop}
+          />
+          <StopButton
+            sessionRunning={info.sessionRunning}
+            breakRunning={info.breakRunning}
+            handleStartStop={handleStartStop}
+          />
+          <ResetButton handleReset={handleReset}>Reset</ResetButton>
+        </div>
+      </main>
       <audio
         src={beep}
         ref={audioRef}

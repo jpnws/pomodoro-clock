@@ -60,10 +60,3 @@ p {
 #__next {
   isolation: isolate;
 }
-
-#root {
-  display: flex;
-  align-items: center;
-  padding: 1em;
-  height: 100vh;
-}
