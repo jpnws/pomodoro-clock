@@ -1,0 +1,14 @@
+.stopButton {
+  border: 0;
+  border-radius: 5px;
+  padding: 0.25rem 1rem 0.25rem 1rem;
+  font-size: 1.5rem;
+}
+
+.disabledCursor {
+  cursor: not-allowed;
+}
+
+.enabledCursor {
+  cursor: pointer;
+}

@@ -3,6 +3,9 @@ import { useState, useRef, useEffect } from "react";
 import beep from "./assets/beep.mp3";
 
 import "./App.css";
+import StartButton from "./StartButton/StartButton";
+import StopButton from "./StopButton/StopButton";
+import ResetButton from "./ResetButton/ResetButton";
 
 const initState = {
   breakLength: 5,
@@ -185,20 +188,17 @@ function App() {
         </div>
       </div>
       <div className="control-box">
-        <button
-          id="start_stop"
-          className="start-stop-btn"
-          onClick={handleStartStop}
-        >
-          {((info.sessionRunning || info.breakRunning) && "⏸") || "▶"}
-        </button>
-        <button
-          id="reset"
-          className="reset-btn"
-          onClick={handleReset}
-        >
-          ↺
-        </button>
+        <StartButton
+          sessionRunning={info.sessionRunning}
+          breakRunning={info.breakRunning}
+          handleStartStop={handleStartStop}
+        />
+        <StopButton
+          sessionRunning={info.sessionRunning}
+          breakRunning={info.breakRunning}
+          handleStartStop={handleStartStop}
+        />
+        <ResetButton handleReset={handleReset}>Reset</ResetButton>
       </div>
       <audio
         className="beep-audio"
