@@ -1,0 +1,21 @@
+.subrootWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.clockTitle {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.lengthBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.controlBox {
+  display: flex;
+  justify-content: center;
+}

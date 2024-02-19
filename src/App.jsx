@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 
-import beep from "./assets/beep.mp3";
-
-import "./App.css";
 import StartButton from "./StartButton/StartButton";
 import StopButton from "./StopButton/StopButton";
 import ResetButton from "./ResetButton/ResetButton";
+import SessionLengthBox from "./SessionLengthBox/SessionLengthBox";
+import BreakLengthBox from "./BreakLengthBox/BreakLengthBox";
+
+import beep from "./assets/beep.mp3";
+
+import styles from "./App.module.css";
+import TimerBox from "./TimerBox/TimerBox";
 
 const initState = {
   breakLength: 5,
@@ -143,51 +147,26 @@ function App() {
   seconds = pad(seconds, 2);
 
   return (
-    <div className="subroot-wrapper">
-      <div className="clock-title">Pomodoro Clock</div>
-      <div className="timer-box">
-        <div id="timer-label">{info.timerLabel}</div>
-        <div id="time-left">{`${minutes}:${seconds}`}</div>
+    <div className={styles.subrootWrapper}>
+      <div className={styles.clockTitle}>Pomodoro Clock</div>
+      <TimerBox
+        timerLabel={info.timerLabel}
+        minutes={minutes}
+        seconds={seconds}
+      />
+      <div className={styles.lengthBox}>
+        <SessionLengthBox
+          sessionLength={info.sessionLength}
+          handleSessionIncrement={handleSessionIncrement}
+          handleSessionDecrement={handleSessionDecrement}
+        />
+        <BreakLengthBox
+          breakLength={info.breakLength}
+          handleBreakIncrement={handleBreakIncrement}
+          handleBreakDecrement={handleBreakDecrement}
+        />
       </div>
-      <div className="length-box">
-        <div className="session-length-box">
-          <div id="session-label">Session Length</div>
-          <div id="session-length">{info.sessionLength} minutes</div>
-          <button
-            id="session-increment"
-            className="session-increment-btn"
-            onClick={handleSessionIncrement}
-          >
-            ⮝
-          </button>
-          <button
-            id="session-decrement"
-            className="session-decrement-btn"
-            onClick={handleSessionDecrement}
-          >
-            ⮟
-          </button>
-        </div>
-        <div className="break-length-box">
-          <div id="break-label">Break Length</div>
-          <div id="break-length">{info.breakLength} minutes</div>
-          <button
-            id="break-increment"
-            className="break-increment-btn"
-            onClick={handleBreakIncrement}
-          >
-            ⮝
-          </button>
-          <button
-            id="break-decrement"
-            className="break-decrement-btn"
-            onClick={handleBreakDecrement}
-          >
-            ⮟
-          </button>
-        </div>
-      </div>
-      <div className="control-box">
+      <div className={styles.controlBox}>
         <StartButton
           sessionRunning={info.sessionRunning}
           breakRunning={info.breakRunning}
@@ -201,8 +180,6 @@ function App() {
         <ResetButton handleReset={handleReset}>Reset</ResetButton>
       </div>
       <audio
-        className="beep-audio"
-        id="beep"
         src={beep}
         ref={audioRef}
       ></audio>

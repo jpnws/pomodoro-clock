@@ -1,0 +1,14 @@
+.timerBox {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.timerLabel {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.timeLeft {
+  font-weight: 700;
+  font-size: 4rem;
+}
