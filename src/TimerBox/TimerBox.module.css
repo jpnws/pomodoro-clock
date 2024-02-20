@@ -1,8 +1,14 @@
 .timerBox {
+  margin-top: 2rem;
+  text-align: center;
 }
 
 .timerLabel {
+  font-weight: 500;
+  font-size: 2rem;
 }
 
 .timeLeft {
+  font-weight: 500;
+  font-size: clamp(5rem, 1vw, 10rem);
 }

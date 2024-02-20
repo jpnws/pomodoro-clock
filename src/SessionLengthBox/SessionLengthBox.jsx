@@ -11,18 +11,20 @@ export default function SessionLengthBox({
     <div className={styles.sessionLengthBox}>
       <div className={styles.sessionLabel}>Session Length</div>
       <div className={styles.sessionLength}>{sessionLength} minutes</div>
-      <button
-        className={styles.sessionIncrementButton}
-        onClick={handleSessionIncrement}
-      >
-        ⮝
-      </button>
-      <button
-        className={styles.sessionDecrementButton}
-        onClick={handleSessionDecrement}
-      >
-        ⮟
-      </button>
+      <div className={styles.buttonGroup}>
+        <button
+          className={styles.sessionIncrementButton}
+          onClick={handleSessionIncrement}
+        >
+          ⮝
+        </button>
+        <button
+          className={styles.sessionDecrementButton}
+          onClick={handleSessionDecrement}
+        >
+          ⮟
+        </button>
+      </div>
     </div>
   );
 }

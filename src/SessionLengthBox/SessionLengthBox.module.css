@@ -2,13 +2,34 @@
 }
 
 .sessionLabel {
+  font-weight: 500;
+  font-size: 1.25rem;
 }
 
 .sessionLength {
+  font-size: 1.15rem;
 }
 
-.sessionIncrementButton {
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
 }
 
+.sessionIncrementButton,
 .sessionDecrementButton {
+  cursor: pointer;
+  border: 0;
+  border-radius: 5px;
+  background-color: hsl(0, 0%, 82%);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  font-size: 1rem;
+  &:hover,
+  &:focus {
+    background-color: hsl(0, 0%, 80%);
+  }
+  &:active {
+    background-color: hsl(0, 0%, 75%);
+  }
 }

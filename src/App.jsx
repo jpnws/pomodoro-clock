@@ -16,7 +16,7 @@ const initState = {
   breakTimeLeft: 0,
   breakRunning: false,
   breakInit: true,
-  sessionLength: 25,
+  sessionLength: 0.1,
   sessionTimeLeft: 1500,
   sessionRunning: false,
   sessionInit: true,
@@ -28,19 +28,26 @@ function App() {
   const audioRef = useRef(null);
 
   const handleReset = () => {
-    audioRef.current.play();
     setInfo(initState);
   };
 
   const handleBreakIncrement = () => {
     if (info.breakLength < 60) {
-      setInfo({ ...info, breakLength: info.breakLength + 1 });
+      setInfo({
+        ...info,
+        breakLength: info.breakLength + 1,
+        breakTimeLeft: (info.breakLength + 1) * 60,
+      });
     }
   };
 
   const handleBreakDecrement = () => {
     if (info.breakLength > 1) {
-      setInfo({ ...info, breakLength: info.breakLength - 1 });
+      setInfo({
+        ...info,
+        breakLength: info.breakLength - 1,
+        breakTimeLeft: (info.breakLength - 1) * 60,
+      });
     }
   };
 
@@ -64,7 +71,7 @@ function App() {
     }
   };
 
-  const handleStartStop = () => {
+  const handleStart = () => {
     if (info.sessionInit) {
       setInfo({
         ...info,
@@ -73,15 +80,29 @@ function App() {
         sessionRunning: true,
         timerLabel: "Session",
       });
-    } else if (!info.sessionRunning) {
-      setInfo({ ...info, sessionRunning: true });
-    } else {
+    } else if (!info.sessionRunning && info.sessionTimeLeft > 0) {
+      setInfo({
+        ...info,
+        sessionRunning: true,
+      });
+    } else if (!info.breakRunning && info.breakTimeLeft > 0) {
+      setInfo({
+        ...info,
+        breakRunning: true,
+      });
+    }
+  };
+
+  const handleStop = () => {
+    if (info.sessionRunning) {
       setInfo({ ...info, sessionRunning: false });
+    } else if (info.breakRunning) {
+      setInfo({ ...info, breakRunning: false, sessionInit: false });
     }
   };
 
   useEffect(() => {
-    if (info.sessionRunning && !info.breakRunning) {
+    if (info.sessionRunning) {
       const interval = setInterval(() => {
         setInfo((prevInfo) => {
           if (prevInfo.sessionTimeLeft > 0) {
@@ -105,7 +126,7 @@ function App() {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [info.sessionRunning, info.breakRunning]);
+  }, [info.sessionRunning]);
 
   useEffect(() => {
     if (info.breakRunning) {
@@ -139,7 +160,7 @@ function App() {
 
   let minutes = Math.trunc(info.sessionTimeLeft / 60);
   let seconds = info.sessionTimeLeft - minutes * 60;
-  if (info.breakRunning) {
+  if (info.breakRunning || info.breakTimeLeft) {
     minutes = Math.trunc(info.breakTimeLeft / 60);
     seconds = info.breakTimeLeft - minutes * 60;
   }
@@ -171,14 +192,20 @@ function App() {
           <StartButton
             sessionRunning={info.sessionRunning}
             breakRunning={info.breakRunning}
-            handleStartStop={handleStartStop}
+            handleStartStop={handleStart}
           />
           <StopButton
             sessionRunning={info.sessionRunning}
             breakRunning={info.breakRunning}
-            handleStartStop={handleStartStop}
+            handleStartStop={handleStop}
           />
-          <ResetButton handleReset={handleReset}>Reset</ResetButton>
+          <ResetButton
+            handleReset={handleReset}
+            sessionRunning={info.sessionRunning}
+            breakRunning={info.breakRunning}
+          >
+            Reset
+          </ResetButton>
         </div>
       </main>
       <audio

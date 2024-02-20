@@ -2,13 +2,35 @@
 }
 
 .breakLabel {
+  font-weight: 500;
+  font-size: 1.25rem;
 }
 
 .breakLength {
+  margin-top: 0.65;
+  font-size: 1.15rem;
 }
 
-.breakIncrementButton {
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
 }
 
+.breakIncrementButton,
 .breakDecrementButton {
+  cursor: pointer;
+  border: 0;
+  border-radius: 5px;
+  background-color: hsl(0, 0%, 82%);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  font-size: 1rem;
+  &:hover,
+  &:focus {
+    background-color: hsl(0, 0%, 80%);
+  }
+  &:active {
+    background-color: hsl(0, 0%, 75%);
+  }
 }
