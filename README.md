@@ -4,9 +4,7 @@
 
 The Pomodoro Clock is a React-based web application designed for timing work and
 break intervals. It uses React, HTML, CSS, and JavaScript to provide a simple
-and efficient timer for managing time according to the Pomodoro Technique. This
-project demonstrates frontend development skills state management and event
-handling.
+and efficient timer for managing time according to the Pomodoro Technique.
 
 ## Technologies Used
 
