@@ -16,7 +16,7 @@ const initState = {
   breakTimeLeft: 0,
   breakRunning: false,
   breakInit: true,
-  sessionLength: 25,
+  sessionLength: 0.05,
   sessionTimeLeft: 1500,
   sessionRunning: false,
   sessionInit: true,
@@ -160,7 +160,7 @@ function App() {
 
   let minutes = Math.trunc(info.sessionTimeLeft / 60);
   let seconds = info.sessionTimeLeft - minutes * 60;
-  if (info.breakRunning || info.breakTimeLeft) {
+  if (info.breakRunning || (info.sessionTimeLeft === 0 && !info.breakRunning)) {
     minutes = Math.trunc(info.breakTimeLeft / 60);
     seconds = info.breakTimeLeft - minutes * 60;
   }
