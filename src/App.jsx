@@ -16,7 +16,7 @@ const initState = {
   breakTimeLeft: 0,
   breakRunning: false,
   breakInit: true,
-  sessionLength: 0.1,
+  sessionLength: 25,
   sessionTimeLeft: 1500,
   sessionRunning: false,
   sessionInit: true,
